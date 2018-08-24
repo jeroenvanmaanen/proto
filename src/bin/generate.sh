@@ -9,6 +9,10 @@ PROTO="${SRC}/proto"
 PROJECT="$(dirname "${SRC}")"
 TARGET="${PROJECT}/target/html"
 
+declare -a FLAGS_INHERIT
+source "${BIN}/verbose.sh"
+source "${BIN}/lib.sh"
+
 if [ ".$1" = '.-p' ]
 then
     shift
@@ -28,10 +32,6 @@ then
     shift
 fi
 
-declare -a FLAGS_INHERIT
-source "${BIN}/verbose.sh"
-source "${BIN}/lib.sh"
-
 log "PROTO=[${PROTO}]"
 
 log "TARGET=[${TARGET}]"
@@ -40,9 +40,11 @@ TARGET="$(cd "${TARGET}" ; pwd)"
 
 log "Generate: [${PROTO}] [${TARGET}]"
 
-if [ -d "${SRC}/resources" ]
+PROTO_SRC="$(dirname "${PROTO}")"
+
+if [ -d "${PROTO_SRC}/resources" ]
 then
-    cp -r "${SRC}/resources"/* "${TARGET}/."
+    cp -r "${PROTO_SRC}/resources"/* "${TARGET}/."
 fi
 
 for FILE in "$@"
